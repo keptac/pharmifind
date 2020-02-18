@@ -4,7 +4,7 @@ import 'package:http/http.dart'
 import 'drugs.dart';
 
 class Services {
-    static const ROOT = 'http://your_ip_Address/DrugsDB/drug_actions.php';
+    static const ROOT = 'http://your_ip_address/DrugsDB/drug_actions.php';
 
   static const _CREATE_TABLE_ACTION = 'CREATE_TABLE';
   static const _GET_ALL_ACTION = 'GET_ALL';
@@ -17,7 +17,6 @@ class Services {
       var map = Map<String, dynamic>();
       map['action'] = _CREATE_TABLE_ACTION;
       final response = await http.post(ROOT, body: map);
-      print('Create Table Response: ${response.body}');
       if (200 == response.statusCode) {
         return response.body;
       } else {
@@ -33,7 +32,6 @@ class Services {
       var map = Map<String, dynamic>();
       map['action'] = _GET_ALL_ACTION;
       final response = await http.post(ROOT, body: map);
-      print('getDrugs Response: ${response.body}');
       if (200 == response.statusCode) {
         List<Drug> list = parseResponse(response.body);
         return list;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:pharmifind/drugs/searchDrug.dart';
 import 'package:pharmifind/pharmacies/pharmacyDisplay.dart';
 
 import 'dashboard_one/dashboard_menu_row.dart';
@@ -23,6 +24,7 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
   LocationData userLocation;
   var location = Location();
   List<Pharmacy> _pharmacies;
+  final _search = TextEditingController();
 
   @override
   void initState() {
@@ -121,18 +123,28 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                // Icon(Icons.search),
                 SizedBox(
                   width: 10.0,
                 ),
                 Expanded(
                   child: TextField(
+                    controller: _search,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Search for a drug"),
                   ),
                 ),
-                Icon(Icons.search),
+                InkWell(
+                    child: Icon(Icons.search),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchDrug(title: _search.text),
+                        ),
+                      );
+                      print(_search.text);
+                    }),
               ],
             ),
           ),
@@ -170,8 +182,7 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
         ),
       );
 
-
-// Call Google Maps API 
+// Call Google Maps API
   Widget mapCard() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Card(

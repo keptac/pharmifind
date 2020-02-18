@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'locations.dart';
 
 class PharmacyService {
-  static const ROOT = 'http:your_ip_address/DrugsDB/drug_actions.php';
+  static const ROOT = 'http://your_ip_address/DrugsDB/drug_actions.php';
   static const _GET_ALL_PHARMACIES_ACTION = 'GET_ALL_PHARMACIES';
 
   static Future<List<Pharmacy>> getPharmacies() async {

@@ -30,13 +30,13 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
     _getPharmacies();
   }
 
-  _showProgress(String message) {
+  void _showProgress(String message) {
     setState(() {
       _titleProgress = message;
     });
   }
 
-  _getPharmacies() {
+  void _getPharmacies() {
     PharmacyService.getPharmacies().then((pharmacies) {
       setState(() {
         _pharmacies = pharmacies;
@@ -63,7 +63,7 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("View Map Dialog title"),
+          title: Text("Phramacy Location"),
           content: SizedBox(
             height: 300,
             width: 300,
@@ -139,19 +139,6 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
     );
   }
 
-  // Widget _backdrop() {
-  //   return BackdropScaffold(
-  //     title: Text('View Map'),
-  //     iconPosition: BackdropIconPosition.none,
-  //     headerHeight: 120.0,
-  //     frontLayer: _dataBody(),
-  //     backLayer: Center(
-  //       child: Text('Display Map'),
-  //     ),
-  //   );
-  // }
-
-  // UI
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
@@ -167,10 +154,6 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
           ),
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          ),
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {

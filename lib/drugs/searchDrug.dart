@@ -5,30 +5,36 @@ import 'package:pharmifind/pharmacies/pharmacy_services.dart';
 import 'drugs.dart';
 import 'services.dart';
 
-class DrugDisplay extends StatefulWidget {
-  DrugDisplay() : super();
+class SearchDrug extends StatefulWidget {
+  // SearchDrug() : super();
 
-  final String title = 'Drugs Store';
+  // final String title = 'Drugs Store';
+
+  final String title;
+  SearchDrug({Key key, @required this.title}) : super(key: key);
 
   @override
   DrugDisplayState createState() => DrugDisplayState();
 }
 
-class DrugDisplayState extends State<DrugDisplay> {
+class DrugDisplayState extends State<SearchDrug> {
   List<Drug> _drugs;
-  List<Pharmacy> _pharmacies;
   GlobalKey<ScaffoldState> _scaffoldKey;
   String _titleProgress;
-  List<Pharmacy> _searchResult = [];
+  List<Drug> _searchResult = [];
+  List<Pharmacy> _searchPharmResult = [];
+  List<Pharmacy> _pharmacies;
   List<Pharmacy> _searchLocResult;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
   @override
   void initState() {
+    _getDrugs();
+
     super.initState();
     _drugs = [];
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
-    _getDrugs();
   }
 
   // Method to update title in the AppBar Title
@@ -46,27 +52,27 @@ class DrugDisplayState extends State<DrugDisplay> {
     );
   }
 
-  _createTable() {
-    _showProgress('Creating Table...');
-    Services.createTable().then((result) {
-      if ('success' == result) {
-        // Table is created successfully.
-        _showSnackBar(context, result);
-        _showProgress(widget.title);
-      } else {
-        _showSnackBar(context, result);
-        _showProgress(widget.title);
+  void onSearchTextChanged(String text) async {
+    _searchResult = [];
+    _drugs.forEach((drug) {
+      if (drug.name.contains(text)) {
+        _searchResult.add(drug);
       }
+    });
+
+    setState(() {
+      _drugs = _searchResult;
     });
   }
 
-  _getDrugs() {
+  void _getDrugs() {
     _showProgress('Loading Drugs...');
     Services.getDrugs().then((drugs) {
       setState(() {
         _drugs = drugs;
       });
-      _showProgress(widget.title); // Reset the title...
+      _showProgress(widget.title);
+      onSearchTextChanged(widget.title);
     });
 
     PharmacyService.getPharmacies().then((pharmacies) {
@@ -151,15 +157,15 @@ class DrugDisplayState extends State<DrugDisplay> {
 
   //stack3
   Widget distanceStack(String pharmacyId, double rating) {
-    _searchResult = [];
+    _searchPharmResult = [];
 
     _pharmacies.forEach((pharmacy) {
       if (pharmacy.id.contains(pharmacyId)) {
-        _searchResult.add(pharmacy);
+        _searchPharmResult.add(pharmacy);
       }
     });
 
-    print(_searchResult[0].name);
+    print(_searchPharmResult[0].name);
 
     return Positioned(
       top: 0.0,
@@ -182,9 +188,9 @@ class DrugDisplayState extends State<DrugDisplay> {
               width: 2.0,
             ),
             Text(
-              _searchResult[0].name,
+              _searchPharmResult[0].name,
               style: TextStyle(color: Colors.white, fontSize: 7.0),
-            ),
+            )
           ],
         ),
       ),
@@ -210,13 +216,11 @@ class DrugDisplayState extends State<DrugDisplay> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                Text(
-                  drug.price,
-                  style: TextStyle(
-                      color: Colors.yellow,
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold),
-                )
+                Text(drug.price,
+                    style: TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold))
               ],
             ),
           ),
@@ -257,14 +261,13 @@ class DrugDisplayState extends State<DrugDisplay> {
   @override
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Center(
           child: Text(
-            _titleProgress,
+            'Search Results for ' + _titleProgress,
             style: TextStyle(
               color: Colors.white,
             ),
@@ -315,18 +318,20 @@ class DrugDisplayState extends State<DrugDisplay> {
               children: <Widget>[
                 Container(),
                 Expanded(
-                  child: _dataBody(),
+                  child: _drugs.isNotEmpty
+                      ? _dataBody()
+                      : Center(
+                          child: Text(
+                            'Drug ' + widget.title + ' Not Found',
+                            style: TextStyle(color: Colors.white, fontSize: 30),
+                          ),
+                        ),
                 ),
               ],
             ),
           ),
         ],
       ),
-
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: () {},
-//        child: Icon(Icons.add),
-//      ),
     );
   }
 }
