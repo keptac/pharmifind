@@ -6,10 +6,6 @@ import 'drugs.dart';
 import 'services.dart';
 
 class SearchDrug extends StatefulWidget {
-  // SearchDrug() : super();
-
-  // final String title = 'Drugs Store';
-
   final String title;
   SearchDrug({Key key, @required this.title}) : super(key: key);
 

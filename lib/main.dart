@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pharmifind/loginModel.dart';
+import 'package:pharmifind/loginService.dart';
 import 'dashboard_one.page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,9 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Pharmi Find',
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue
-      ),
+      theme: ThemeData(primarySwatch: Colors.lightBlue),
       home: MyHomePage(title: 'Pharmi Find Login'),
     );
   }
@@ -26,10 +29,70 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Account> _users;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  TextEditingController _username;
-  TextEditingController _password;
- 
+  final LocalStorage storage = LocalStorage('pharmifind');
+
+  var _username = TextEditingController();
+  var _password = TextEditingController();
+  static const ROOT = 'http://192.168.0.25/DrugsDB/login.php';
+
+  @override
+  void initState() {
+    super.initState();
+    _users = [];
+  }
+
+  void _loginDet() {
+    LoginService.verifyPassword(_username.text, _password.text).then((users) {
+      setState(() {
+        _users = users;
+      });
+
+      if (_users.isNotEmpty) {
+        storage.setItem('username', _username.text);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardOnePage()),
+        );
+      }
+    });
+  }
+
+  // Future<List<Account>> _verifyPassword() async {
+  //   try {
+  //     var map = Map<String, dynamic>();
+  //     map['username'] = _username.text;
+  //     map['password'] = _password.text;
+
+  //     final response = await http.post(ROOT, body: map);
+  //     if (200 == response.statusCode) {
+  //       List<Account> list = parseResponse(response.body);
+  //       if (list.isNotEmpty) {
+  //        await Navigator.push(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => DashboardOnePage()),
+  //         );
+  //         return list;
+  //       } else {
+  //         print("Invalid username/username");
+  //           return list;
+  //       }
+  //     } else {
+  //        print("500r");
+  //       return List<Account>();
+  //     }
+  //   } catch (e) {
+  //      print("API DOWN");
+  //     return List<Account>();
+  //   }
+  // }
+
+  // static List<Account> parseResponse(String responseBody) {
+  //   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+  //   return parsed.map<Account>((json) => Account.fromJson(json)).toList();
+  // }
+
   @override
   Widget build(BuildContext context) {
     final emailField = TextField(
@@ -62,10 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DashboardOnePage()),
-          );
+          _loginDet();
         },
         child: Text("Login",
             textAlign: TextAlign.center,

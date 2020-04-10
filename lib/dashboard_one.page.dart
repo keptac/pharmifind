@@ -12,6 +12,7 @@ import 'designs/profile_tile.dart';
 import 'drugs/drugsDisplay.dart';
 import 'pharmacies/locations.dart';
 import 'pharmacies/pharmacy_services.dart';
+import 'package:localstorage/localstorage.dart';
 
 class DashboardOnePage extends StatefulWidget {
   @override
@@ -19,21 +20,23 @@ class DashboardOnePage extends StatefulWidget {
 }
 
 class _DashboardOnePageState extends State<DashboardOnePage> {
+  final LocalStorage storage = LocalStorage('pharmifind');
   Size deviceSize;
   GoogleMapController mapController;
   LocationData userLocation;
   var location = Location();
   List<Pharmacy> _pharmacies;
   final _search = TextEditingController();
+  var username = "";
 
   @override
   void initState() {
+    username = storage.getItem('username');
     super.initState();
     _getPharmacies();
   }
 
-  // ignore: always_declare_return_types
-  _getPharmacies() {
+  void _getPharmacies() {
     PharmacyService.getPharmacies().then((pharmacies) {
       setState(() {
         _pharmacies = pharmacies;
@@ -94,7 +97,7 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
                         : null,
                   ),
                   ProfileTile(
-                    title: "Hi, Nyasha",
+                    title: "Hi, " + username,
                     subtitle: "Welcome to the Pharmi Find",
                     textColor: Colors.white,
                   ),

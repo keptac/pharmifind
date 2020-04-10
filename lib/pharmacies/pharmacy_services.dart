@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'locations.dart';
 
 class PharmacyService {
-  static const ROOT = 'http://your_ip_address/DrugsDB/drug_actions.php';
+  static const ROOT = 'http://192.168.0.25/DrugsDB/drug_actions.php';
   static const _GET_ALL_PHARMACIES_ACTION = 'GET_ALL_PHARMACIES';
 
   static Future<List<Pharmacy>> getPharmacies() async {
@@ -11,7 +11,6 @@ class PharmacyService {
       var map = Map<String, dynamic>();
       map['action'] = _GET_ALL_PHARMACIES_ACTION;
       final response = await http.post(ROOT, body: map);
-      // print('getPharmacies Response: ${response.body}');
       if (200 == response.statusCode) {
         List<Pharmacy> list = parseResponse(response.body);
         return list;
