@@ -4,7 +4,7 @@ import 'package:http/http.dart'
 import 'drugs.dart';
 
 class Services {
-    static const ROOT = 'http://192.168.0.25/DrugsDB/drug_actions.php';
+    static const ROOT = 'http://pharmifind.ginomai.co.zw/drug_actions.php';
 
   static const _CREATE_TABLE_ACTION = 'CREATE_TABLE';
   static const _GET_ALL_ACTION = 'GET_ALL';

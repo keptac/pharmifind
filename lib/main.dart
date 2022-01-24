@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _username = TextEditingController();
   var _password = TextEditingController();
-  static const ROOT = 'http://192.168.0.25/DrugsDB/login.php';
+  static const ROOT = 'http://pharmifind.ginomai.co.zw/login.php';
 
   @override
   void initState() {
