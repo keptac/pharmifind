@@ -72,7 +72,7 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
                 target: LatLng(-17.824858, 31.053028),
                 zoom: 15.0,
               ),
-              markers: Set<Marker>.of(markers.values),
+              // markers: Set<Marker>.of(markers.values),
             ),
           ),
           actions: <Widget>[

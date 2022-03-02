@@ -75,7 +75,7 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
     });
   }
 
-  final LatLng _center = const LatLng(-17.824858, 31.053028);
+  final LatLng _center = const LatLng(-17.829732153190125, 31.044149276453563);
 
   Widget appBarColumn(BuildContext context) => SafeArea(
         child: Padding(
@@ -203,13 +203,21 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
-                    target: userLocation != null
-                        ? LatLng(userLocation.latitude, userLocation.longitude)
-                        : _center,
+                    target: _center,
                     zoom: 15.0,
                   ),
                   markers: _markers.values.toSet(),
                 ),
+                // child: GoogleMap(
+                //   onMapCreated: _onMapCreated,
+                //   initialCameraPosition: CameraPosition(
+                //     target: userLocation != null
+                //         ? LatLng(userLocation.latitude, userLocation.longitude)
+                //         : _center,
+                //     zoom: 15.0,
+                //   ),
+                //   markers: _markers.values.toSet(),
+                // ),
               ),
             ],
           ),

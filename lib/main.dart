@@ -134,6 +134,22 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
+    final registerButton = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.grey,
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          _loginDet();
+        },
+        child: Text("Register new account",
+            textAlign: TextAlign.center,
+            style: style.copyWith(color: Colors.white)),
+      ),
+    );
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Center(
@@ -174,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(
                   height: 15.0,
                 ),
+                registerButton
               ],
             ),
           ),

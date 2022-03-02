@@ -15,10 +15,10 @@ class PharmacyService {
         List<Pharmacy> list = parseResponse(response.body);
         return list;
       } else {
-        return List<Pharmacy>();
+        return <Pharmacy>[];
       }
     } catch (e) {
-      return List<Pharmacy>();
+      return <Pharmacy>[];
     }
   }
 
