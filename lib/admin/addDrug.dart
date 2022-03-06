@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pharmifind/pharmacies/locations.dart';
+import 'package:pharmifind/pharmacies/pharmacy_services.dart';
 import 'adminServices.dart';
 
 class AddDrugs extends StatefulWidget {
@@ -9,15 +11,18 @@ class AddDrugs extends StatefulWidget {
 class AddDrugsState extends State<AddDrugs> {
   GlobalKey<ScaffoldState> _scaffoldKey;
   var _drugName = TextEditingController();
-  var _pharmacy = TextEditingController();
   var _price = TextEditingController();
   var errorMsg = '';
+  Pharmacy selectedPharmacy;
+  List<Pharmacy> _pharmacies;
+
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   void initState() {
     super.initState();
     _scaffoldKey = GlobalKey();
+    _getPharmacies();
   }
 
   void _showSnackBar(context, message) {
@@ -28,9 +33,18 @@ class AddDrugsState extends State<AddDrugs> {
     );
   }
 
+  void _getPharmacies() {
+    PharmacyService.getPharmacies().then((pharmacies) {
+      setState(() {
+        _pharmacies = pharmacies;
+      });
+      print("Length ${pharmacies.length}");
+    });
+  }
+
   void _addNewDrug() {
     print("Adding drug");
-    AdminServices.addNewDrug(_drugName.text, _price.text, _pharmacy.text)
+    AdminServices.addNewDrug(_drugName.text, _price.text, selectedPharmacy.id)
         .then((response) {
       if (response == "success") {
         this.setState(() {
@@ -45,6 +59,46 @@ class AddDrugsState extends State<AddDrugs> {
   @override
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
+
+    final pharmaciesDropDown = Container(
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: Colors.grey,
+          width: 1,
+        ),
+      ),
+      child: DropdownButton<Pharmacy>(
+        focusColor: Colors.white,
+        underline: Container(
+          margin: EdgeInsets.all(20),
+        ),
+        value: selectedPharmacy,
+        isExpanded: true,
+        style: TextStyle(color: Colors.white),
+        iconEnabledColor: Colors.black,
+        items: _pharmacies.map<DropdownMenuItem<Pharmacy>>((var pharmacy) {
+          return DropdownMenuItem<Pharmacy>(
+            value: pharmacy,
+            child: Text(
+              pharmacy.name,
+              style: TextStyle(color: Colors.black),
+            ),
+          );
+        }).toList(),
+        hint: Text(
+          "Select Pharmacy",
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        onChanged: (var value) {
+          setState(() {
+            selectedPharmacy = value;
+          });
+        },
+      ),
+    );
 
     final drugNameField = TextField(
       controller: _drugName,
@@ -65,17 +119,6 @@ class AddDrugsState extends State<AddDrugs> {
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Drug Price",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
-    );
-
-    final pharmacyField = TextField(
-      controller: _pharmacy,
-      obscureText: false,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Select Pharmacy",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
     );
@@ -127,7 +170,7 @@ class AddDrugsState extends State<AddDrugs> {
                 SizedBox(height: 15.0),
                 priceField,
                 SizedBox(height: 15.0),
-                pharmacyField,
+                pharmaciesDropDown,
                 SizedBox(height: 15.0),
                 addButton,
                 // SizedBox(height: 35.0),
