@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:http/http.dart'
     as http; // add the http plugin in pubspec.yaml file.
 
@@ -7,16 +6,15 @@ class AdminServices {
   static const addPharmacyRoot =
       'http://pharmifind.ginomai.co.zw/addPharmacy.php';
 
-  static Future<String> addNewDrug(drugName, pharmacy, price) async {
-    print(drugName + pharmacy + price);
+  static Future<String> addNewDrug(drugName, drugPrice, pharmacy) async {
     try {
       var map = Map<String, dynamic>();
-      map['drugName'] = drugName.toString().toUpperCase();
-      map['price'] = price.toString();
+      map['drugName'] = drugName.toString();
+      map['drugPrice'] = drugPrice.toString();
       map['pharmacy'] = pharmacy.toString();
 
       final response = await http.post(addDrugRoot, body: map);
-      print(response);
+      print(response.body);
       if (200 == response.statusCode) {
         print("Successfully added");
         return "success";

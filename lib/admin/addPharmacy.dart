@@ -96,18 +96,19 @@ class AddPharmacyState extends State<AddPharmacy> {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue[900],
-          title: Center(
-            child: Text(
-              "Add Pharmacy",
-              style: TextStyle(
-                color: Colors.white,
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.blue[900],
+        title: Center(
+          child: Text(
+            "Add Pharmacy",
+            style: TextStyle(
+              color: Colors.white,
             ),
           ),
         ),
-        body: Container(
+      ),
+      body: SingleChildScrollView(
+        child: Container(
           height: deviceSize.height,
           // color: Colors.white,
           child: Padding(
@@ -130,6 +131,8 @@ class AddPharmacyState extends State<AddPharmacy> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

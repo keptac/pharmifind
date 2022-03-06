@@ -122,7 +122,7 @@ class DrugDisplayState extends State<SearchDrug> {
                 width: 300,
                 child: Center(
                   child: Text(
-                    '\n\n ' + drug.name + '\n\n \$' + drug.price,
+                    '\n\n ' + drug.name + '\n\n \$' + drug.drugPrice,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -212,7 +212,7 @@ class DrugDisplayState extends State<SearchDrug> {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                Text(drug.price,
+                Text(drug.drugPrice,
                     style: TextStyle(
                         color: Colors.yellow,
                         fontSize: 12.0,

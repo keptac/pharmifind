@@ -22,7 +22,7 @@ class DrugDisplayState extends State<DrugDisplay> {
   List<Pharmacy> _searchResult = [];
   List<Pharmacy> _searchLocResult;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-    final LatLng _center = const LatLng(-17.829732153190125, 31.044149276453563);
+  final LatLng _center = const LatLng(-17.829732153190125, 31.044149276453563);
   @override
   void initState() {
     super.initState();
@@ -121,7 +121,7 @@ class DrugDisplayState extends State<DrugDisplay> {
                 width: 300,
                 child: Center(
                   child: Text(
-                    '\n\n ' + drug.name + '\n\n \$' + drug.price,
+                    '\n\n ' + drug.name + '\n\n \$' + drug.drugPrice,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -212,7 +212,7 @@ class DrugDisplayState extends State<DrugDisplay> {
                   ),
                 ),
                 Text(
-                  drug.price,
+                  drug.drugPrice,
                   style: TextStyle(
                       color: Colors.yellow,
                       fontSize: 12.0,
@@ -323,11 +323,6 @@ class DrugDisplayState extends State<DrugDisplay> {
           ),
         ],
       ),
-
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: () {},
-//        child: Icon(Icons.add),
-//      ),
     );
   }
 }

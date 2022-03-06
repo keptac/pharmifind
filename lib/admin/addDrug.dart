@@ -8,7 +8,7 @@ class AddDrugs extends StatefulWidget {
 
 class AddDrugsState extends State<AddDrugs> {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  var drugName = TextEditingController();
+  var _drugName = TextEditingController();
   var _pharmacy = TextEditingController();
   var _price = TextEditingController();
   var errorMsg = '';
@@ -30,7 +30,7 @@ class AddDrugsState extends State<AddDrugs> {
 
   void _addNewDrug() {
     print("Adding drug");
-    AdminServices.addNewDrug(drugName.text, _pharmacy.text, _price.text)
+    AdminServices.addNewDrug(_drugName.text, _price.text, _pharmacy.text)
         .then((response) {
       if (response == "success") {
         this.setState(() {
@@ -47,7 +47,7 @@ class AddDrugsState extends State<AddDrugs> {
     Size deviceSize = MediaQuery.of(context).size;
 
     final drugNameField = TextField(
-      controller: drugName,
+      controller: _drugName,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -61,7 +61,6 @@ class AddDrugsState extends State<AddDrugs> {
     final priceField = TextField(
       controller: _price,
       obscureText: false,
-      keyboardType: TextInputType.number,
       style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -99,18 +98,19 @@ class AddDrugsState extends State<AddDrugs> {
     );
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue[900],
-          title: Center(
-            child: Text(
-              "Add New Drug",
-              style: TextStyle(
-                color: Colors.white,
-              ),
+      appBar: AppBar(
+        backgroundColor: Colors.blue[900],
+        title: Center(
+          child: Text(
+            "Add New Drug",
+            style: TextStyle(
+              color: Colors.white,
             ),
           ),
         ),
-        body: Container(
+      ),
+      body: SingleChildScrollView(
+        child: Container(
           // color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -134,6 +134,8 @@ class AddDrugsState extends State<AddDrugs> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
