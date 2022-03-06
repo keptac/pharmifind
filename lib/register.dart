@@ -3,8 +3,6 @@ import 'package:pharmifind/loginModel.dart';
 import 'package:pharmifind/main.dart';
 import 'package:pharmifind/registerService.dart';
 import 'dashboard_one.page.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -16,7 +14,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  List<Account> _users;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final LocalStorage storage = LocalStorage('pharmifind');
 
@@ -28,18 +25,13 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-    _users = [];
   }
 
   void _registerDet() {
     if (_verifyPassword.text == _password.text) {
-      RegisterService.verifyPassword(_username.text, _password.text)
-          .then((users) {
-        setState(() {
-          _users = users;
-        });
-
-        if (_users.isNotEmpty) {
+      RegisterService.newAccount(_username.text, _password.text)
+          .then((response) {
+        if (response == "success") {
           storage.setItem('username', _username.text);
           Navigator.push(
             context,
@@ -84,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
       style: style,
       decoration: InputDecoration(
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
+          hintText: "Verify Password",
           border:
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
@@ -106,19 +98,14 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
 
-    final loginButton = Material(
-      elevation: 1.0,
-      // borderRadius: BorderRadius.circular(30.0),
-      // color: Colors.grey,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyHomePage()));
-        },
-        child: Text("Login with old account",
-            textAlign: TextAlign.center,
-            style: style.copyWith(color: Colors.white)),
-      ),
+    final loginButton = InkWell(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+      },
+      child: Text("Already Register? Login",
+          textAlign: TextAlign.center,
+          style: style.copyWith(color: Colors.black)),
     );
 
     return Scaffold(
@@ -136,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   height: 50.0,
                 ),
                 SizedBox(
-                  height: 150.0,
+                  height: 100.0,
                   child: Image.asset(
                     "assets/images/logo.png",
                     fit: BoxFit.contain,
@@ -150,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 55.0),
+                SizedBox(height: 40.0),
                 Text(errorMsg,
                     style: TextStyle(
                         color: Colors.red,
@@ -161,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: 25.0),
                 passwordField,
                 SizedBox(
-                  height: 35.0,
+                  height: 25.0,
                 ),
                 verifyPasswordField,
                 SizedBox(

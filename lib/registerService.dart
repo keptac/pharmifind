@@ -6,29 +6,26 @@ import 'package:pharmifind/loginModel.dart';
 class RegisterService {
   static const ROOT = 'http://pharmifind.ginomai.co.zw/register.php';
 
-  static Future<List<Account>> verifyPassword(user, pass) async {
+  static Future<String> newAccount(user, pass) async {
     try {
       var map = Map<String, dynamic>();
       map['username'] = user.toString();
       map['password'] = pass.toString();
 
       final response = await http.post(ROOT, body: map);
+      print(response);
       if (200 == response.statusCode) {
-        List<Account> list = parseResponse(response.body);
-        if (list.isNotEmpty) {
-          return list;
-        } else {
-          print("Invalid username/username");
-          return list;
-        }
+        print("Successfully registered");
+
+        return "success";
       } else {
         print("500");
-        return List<Account>();
+        return "Registration Failed contact admin";
       }
     } catch (e) {
       print(e);
       print("API DOWN");
-      return List<Account>();
+      return "Registration Failed contact admin";
     }
   }
 
