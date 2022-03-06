@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'adminServices.dart';
 
 class AddPharmacy extends StatefulWidget {
@@ -10,6 +11,7 @@ class AddPharmacyState extends State<AddPharmacy> {
   GlobalKey<ScaffoldState> _scaffoldKey;
   var _pharmacyName = TextEditingController();
   var _address = TextEditingController();
+  var errorMsg = '';
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -26,14 +28,26 @@ class AddPharmacyState extends State<AddPharmacy> {
     );
   }
 
-  void _addNewPharmacy() {
-    AdminServices.addNewPharmacy(
-            _pharmacyName.text, _address.text, "-773773", "929292")
+  void _getLoc() async {
+    var localAddress = _address.text + " " + "Harare";
+    var addresses = await Geocoder.local.findAddressesFromQuery(localAddress);
+    var first = addresses.first;
+    print(first.coordinates.latitude);
+    print(first.coordinates.longitude);
+    _addNewPharmacy(first.coordinates.latitude, first.coordinates.longitude);
+  }
+
+  void _addNewPharmacy(lat, lon) {
+    AdminServices.addNewPharmacy(_pharmacyName.text, _address.text, lat, lon)
         .then((response) {
       if (response == "success") {
-        _showSnackBar(context, "Pharmacy Added successfully");
+        this.setState(() {
+          errorMsg = 'Success';
+        });
       } else {
-        _showSnackBar(context, response);
+        this.setState(() {
+          errorMsg = response;
+        });
       }
     });
   }
@@ -72,7 +86,7 @@ class AddPharmacyState extends State<AddPharmacy> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          _addNewPharmacy();
+          _getLoc();
         },
         child: Text("Submit",
             textAlign: TextAlign.center,
@@ -101,6 +115,12 @@ class AddPharmacyState extends State<AddPharmacy> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0),
+                Text(errorMsg,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 12)),
+                SizedBox(height: 15.0),
                 _pharmacyNameField,
                 SizedBox(height: 20.0),
                 pharmacyField,
