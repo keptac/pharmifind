@@ -29,6 +29,7 @@ dependencies:
   location: ^2.3.5
   font_awesome_flutter:
   backdrop: ^0.2.8
+  geocoder: ^0.2.1
 
   cupertino_icons: ^0.1.2
 dev_dependencies:

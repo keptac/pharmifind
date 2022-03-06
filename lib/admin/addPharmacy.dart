@@ -8,7 +8,7 @@ class AddPharmacy extends StatefulWidget {
 
 class AddPharmacyState extends State<AddPharmacy> {
   GlobalKey<ScaffoldState> _scaffoldKey;
-  var _addressName = TextEditingController();
+  var _pharmacyName = TextEditingController();
   var _address = TextEditingController();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -18,7 +18,7 @@ class AddPharmacyState extends State<AddPharmacy> {
     _scaffoldKey = GlobalKey();
   }
 
-  _showSnackBar(context, message) {
+  void _showSnackBar(context, message) {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text(message),
@@ -26,9 +26,9 @@ class AddPharmacyState extends State<AddPharmacy> {
     );
   }
 
-  _addNewPharmacy() {
+  void _addNewPharmacy() {
     AdminServices.addNewPharmacy(
-            _addressName.text, _address.text, "-773773", "929292")
+            _pharmacyName.text, _address.text, "-773773", "929292")
         .then((response) {
       if (response == "success") {
         _showSnackBar(context, "Pharmacy Added successfully");
@@ -42,8 +42,8 @@ class AddPharmacyState extends State<AddPharmacy> {
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
 
-    final _addressNameField = TextField(
-      controller: _addressName,
+    final _pharmacyNameField = TextField(
+      controller: _pharmacyName,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -54,7 +54,7 @@ class AddPharmacyState extends State<AddPharmacy> {
     );
 
     final pharmacyField = TextField(
-      controller: _addressName,
+      controller: _address,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -86,7 +86,7 @@ class AddPharmacyState extends State<AddPharmacy> {
           backgroundColor: Colors.blue[900],
           title: Center(
             child: Text(
-              "Add New Drug",
+              "Add Pharmacy",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -101,7 +101,7 @@ class AddPharmacyState extends State<AddPharmacy> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0),
-                _addressNameField,
+                _pharmacyNameField,
                 SizedBox(height: 20.0),
                 pharmacyField,
                 SizedBox(height: 25.0),

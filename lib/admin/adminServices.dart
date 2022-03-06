@@ -8,9 +8,10 @@ class AdminServices {
       'http://pharmifind.ginomai.co.zw/addPharmacy.php';
 
   static Future<String> addNewDrug(drugName, pharmacy, price) async {
+    print(drugName + pharmacy + price);
     try {
       var map = Map<String, dynamic>();
-      map['drugName'] = drugName.toString();
+      map['drugName'] = drugName.toString().toUpperCase();
       map['price'] = price.toString();
       map['pharmacy'] = pharmacy.toString();
 
@@ -18,7 +19,6 @@ class AdminServices {
       print(response);
       if (200 == response.statusCode) {
         print("Successfully added");
-
         return "success";
       } else {
         print("500");

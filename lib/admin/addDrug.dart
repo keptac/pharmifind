@@ -11,6 +11,7 @@ class AddDrugsState extends State<AddDrugs> {
   var drugName = TextEditingController();
   var _pharmacy = TextEditingController();
   var _price = TextEditingController();
+  var errorMsg = '';
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -19,7 +20,7 @@ class AddDrugsState extends State<AddDrugs> {
     _scaffoldKey = GlobalKey();
   }
 
-  _showSnackBar(context, message) {
+  void _showSnackBar(context, message) {
     _scaffoldKey.currentState.showSnackBar(
       SnackBar(
         content: Text(message),
@@ -27,13 +28,16 @@ class AddDrugsState extends State<AddDrugs> {
     );
   }
 
-  _addNewDrug() {
+  void _addNewDrug() {
+    print("Adding drug");
     AdminServices.addNewDrug(drugName.text, _pharmacy.text, _price.text)
         .then((response) {
       if (response == "success") {
-        _showSnackBar(context, "Drug Added successfully");
+        this.setState(() {
+          errorMsg = "Drug Added successfully";
+        });
       } else {
-        _showSnackBar(context, response);
+        errorMsg = response;
       }
     });
   }
@@ -47,10 +51,12 @@ class AddDrugsState extends State<AddDrugs> {
       obscureText: false,
       style: style,
       decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Enter Drug Name",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
+        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        hintText: "Enter Drug Name",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
     );
     final priceField = TextField(
       controller: _price,
@@ -65,7 +71,7 @@ class AddDrugsState extends State<AddDrugs> {
     );
 
     final pharmacyField = TextField(
-      controller: drugName,
+      controller: _pharmacy,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -105,19 +111,24 @@ class AddDrugsState extends State<AddDrugs> {
           ),
         ),
         body: Container(
-          height: deviceSize.height,
           // color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0),
+                Text(errorMsg,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 12)),
+                SizedBox(height: 15.0),
                 drugNameField,
-                SizedBox(height: 20.0),
+                SizedBox(height: 15.0),
                 priceField,
-                SizedBox(height: 20.0),
+                SizedBox(height: 15.0),
                 pharmacyField,
-                SizedBox(height: 25.0),
+                SizedBox(height: 15.0),
                 addButton,
                 // SizedBox(height: 35.0),
               ],
