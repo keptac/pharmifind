@@ -6,20 +6,20 @@ import 'package:location/location.dart';
 import 'package:pharmifind/drugs/searchDrug.dart';
 import 'package:pharmifind/pharmacies/pharmacyDisplay.dart';
 
-import 'dashboard_one/dashboard_menu_row.dart';
-import 'designs/background.dart';
-import 'designs/profile_tile.dart';
-import 'drugs/drugsDisplay.dart';
-import 'pharmacies/locations.dart';
-import 'pharmacies/pharmacy_services.dart';
+import '../dashboard_one/dashboard_menu_row.dart';
+import '../designs/background.dart';
+import '../designs/profile_tile.dart';
+import '../drugs/drugsDisplay.dart';
+import '../pharmacies/locations.dart';
+import '../pharmacies/pharmacy_services.dart';
 import 'package:localstorage/localstorage.dart';
 
-class DashboardOnePage extends StatefulWidget {
+class AdminDashboard extends StatefulWidget {
   @override
-  _DashboardOnePageState createState() => _DashboardOnePageState();
+  _AdminDashboardState createState() => _AdminDashboardState();
 }
 
-class _DashboardOnePageState extends State<DashboardOnePage> {
+class _AdminDashboardState extends State<AdminDashboard> {
   final LocalStorage storage = LocalStorage('pharmifind');
   Size deviceSize;
   GoogleMapController mapController;
@@ -98,18 +98,9 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
                   ),
                   ProfileTile(
                     title: "Hi, " + username,
-                    subtitle: "Welcome to the Pharmi Find",
+                    subtitle: "Admin Profile",
                     textColor: Colors.white,
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      print("hi");
-                    },
-                  )
                 ],
               ),
             ],
@@ -185,7 +176,6 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
         ),
       );
 
-// Call Google Maps API
   Widget mapCard() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Card(
@@ -199,25 +189,16 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
               ),
               SizedBox(
                 height: 350.0,
-                // Google Map API Function
                 child: GoogleMap(
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(
-                    target: _center,
+                    target: userLocation != null
+                        ? LatLng(userLocation.latitude, userLocation.longitude)
+                        : _center,
                     zoom: 15.0,
                   ),
                   markers: _markers.values.toSet(),
                 ),
-                // child: GoogleMap(
-                //   onMapCreated: _onMapCreated,
-                //   initialCameraPosition: CameraPosition(
-                //     target: userLocation != null
-                //         ? LatLng(userLocation.latitude, userLocation.longitude)
-                //         : _center,
-                //     zoom: 15.0,
-                //   ),
-                //   markers: _markers.values.toSet(),
-                // ),
               ),
             ],
           ),

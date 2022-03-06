@@ -23,12 +23,12 @@ class LoginService {
         }
       } else {
         print("500");
-        return List<Account>();
+        return <Account>[];
       }
     } catch (e) {
       print(e);
       print("API DOWN");
-      return List<Account>();
+      return <Account>[];
     }
   }
 

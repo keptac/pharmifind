@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmifind/admin/adminDashboard.dart';
 import 'package:pharmifind/loginModel.dart';
 import 'package:pharmifind/loginService.dart';
 import 'package:pharmifind/register.dart';
@@ -34,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   var _username = TextEditingController();
   var _password = TextEditingController();
+  var errorMsg = "";
   static const ROOT = 'http://pharmifind.ginomai.co.zw/login.php';
 
   @override
@@ -50,10 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (_users.isNotEmpty) {
         storage.setItem('username', _username.text);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardOnePage()),
-        );
+        if (_username.text == "admin") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminDashboard()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DashboardOnePage()),
+          );
+        }
+      } else {
+        this.setState(() {
+          errorMsg = "Invalid username or password";
+        });
       }
     });
   }
@@ -85,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.orange,
+      color: Colors.blueAccent,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -146,6 +159,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 SizedBox(height: 55.0),
+                Text(errorMsg,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 12)),
+                SizedBox(height: 10.0),
                 emailField,
                 SizedBox(height: 25.0),
                 passwordField,

@@ -84,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
-      color: Colors.orange,
+      color: Colors.blueAccent,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
