@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:pharmifind/admin/addDrug.dart';
+import 'package:pharmifind/admin/addPharmacy.dart';
 import 'package:pharmifind/designs/label_below_icon.dart';
 import 'package:pharmifind/drugs/searchDrug.dart';
 import 'package:pharmifind/pharmacies/pharmacyDisplay.dart';
@@ -245,7 +246,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AddDrugs()),
+                            MaterialPageRoute(
+                                builder: (context) => AddPharmacy()),
                           );
                         },
                         child: Column(
