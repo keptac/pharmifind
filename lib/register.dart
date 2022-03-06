@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:pharmifind/loginModel.dart';
-import 'package:pharmifind/loginService.dart';
+import 'package:pharmifind/main.dart';
+import 'package:pharmifind/registerService.dart';
 import 'dashboard_one.page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Pharmi Find',
-      theme: ThemeData(primarySwatch: Colors.lightBlue),
-      home: MyHomePage(title: 'Pharmi Find Login'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _RegisterPageState extends State<RegisterPage> {
   List<Account> _users;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final LocalStorage storage = LocalStorage('pharmifind');
 
   var _username = TextEditingController();
   var _password = TextEditingController();
-  static const ROOT = 'http://pharmifind.ginomai.co.zw/login.php';
+  var _verifyPassword = TextEditingController();
+  var errorMsg = '';
 
   @override
   void initState() {
@@ -41,55 +31,28 @@ class _MyHomePageState extends State<MyHomePage> {
     _users = [];
   }
 
-  void _loginDet() {
-    LoginService.verifyPassword(_username.text, _password.text).then((users) {
-      setState(() {
-        _users = users;
+  void _registerDet() {
+    if (_verifyPassword.text == _password.text) {
+      RegisterService.verifyPassword(_username.text, _password.text)
+          .then((users) {
+        setState(() {
+          _users = users;
+        });
+
+        if (_users.isNotEmpty) {
+          storage.setItem('username', _username.text);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DashboardOnePage()),
+          );
+        }
       });
-
-      if (_users.isNotEmpty) {
-        storage.setItem('username', _username.text);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DashboardOnePage()),
-        );
-      }
-    });
+    } else {
+      this.setState(() {
+        errorMsg = "Password dont match";
+      });
+    }
   }
-
-  // Future<List<Account>> _verifyPassword() async {
-  //   try {
-  //     var map = Map<String, dynamic>();
-  //     map['username'] = _username.text;
-  //     map['password'] = _password.text;
-
-  //     final response = await http.post(ROOT, body: map);
-  //     if (200 == response.statusCode) {
-  //       List<Account> list = parseResponse(response.body);
-  //       if (list.isNotEmpty) {
-  //        await Navigator.push(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => DashboardOnePage()),
-  //         );
-  //         return list;
-  //       } else {
-  //         print("Invalid username/username");
-  //           return list;
-  //       }
-  //     } else {
-  //        print("500r");
-  //       return List<Account>();
-  //     }
-  //   } catch (e) {
-  //      print("API DOWN");
-  //     return List<Account>();
-  //   }
-  // }
-
-  // static List<Account> parseResponse(String responseBody) {
-  //   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-  //   return parsed.map<Account>((json) => Account.fromJson(json)).toList();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +78,18 @@ class _MyHomePageState extends State<MyHomePage> {
               OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
     );
 
-    final loginButton = Material(
+    final verifyPasswordField = TextField(
+      controller: _verifyPassword,
+      obscureText: true,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Password",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
+    final registerButton = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Colors.orange,
@@ -123,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          _loginDet();
+          _registerDet();
         },
         child: Text("Login",
             textAlign: TextAlign.center,
@@ -132,17 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
 
-    final registerButton = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Colors.grey,
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          _loginDet();
+    final loginButton = Material(
+      elevation: 1.0,
+      // borderRadius: BorderRadius.circular(30.0),
+      // color: Colors.grey,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MyHomePage()));
         },
-        child: Text("Register new account",
+        child: Text("Login with old account",
             textAlign: TextAlign.center,
             style: style.copyWith(color: Colors.white)),
       ),
@@ -178,17 +151,27 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 SizedBox(height: 55.0),
+                Text(errorMsg,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                        fontSize: 12)),
+                SizedBox(height: 10.0),
                 emailField,
                 SizedBox(height: 25.0),
                 passwordField,
                 SizedBox(
                   height: 35.0,
                 ),
-                loginButton,
+                verifyPasswordField,
+                SizedBox(
+                  height: 35.0,
+                ),
+                registerButton,
                 SizedBox(
                   height: 15.0,
                 ),
-                registerButton
+                loginButton
               ],
             ),
           ),

@@ -3,8 +3,8 @@ import 'package:http/http.dart'
     as http; // add the http plugin in pubspec.yaml file.
 import 'package:pharmifind/loginModel.dart';
 
-class LoginService {
-  static const ROOT = 'http://pharmifind.ginomai.co.zw/login.php';
+class RegisterService {
+  static const ROOT = 'http://pharmifind.ginomai.co.zw/register.php';
 
   static Future<List<Account>> verifyPassword(user, pass) async {
     try {
