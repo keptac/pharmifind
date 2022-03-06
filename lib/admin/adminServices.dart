@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'package:http/http.dart'
     as http; // add the http plugin in pubspec.yaml file.
-import 'package:pharmifind/loginModel.dart';
 
 class AdminServices {
-  static const ROOT = 'http://pharmifind.ginomai.co.zw/addDrug.php';
+  static const addDrugRoot = 'http://pharmifind.ginomai.co.zw/addDrug.php';
+  static const addPharmacyRoot =
+      'http://pharmifind.ginomai.co.zw/addPharmacy.php';
 
-  static Future<String> addNewDrug(drugName, pharmacy) async {
+  static Future<String> addNewDrug(drugName, pharmacy, price) async {
     try {
       var map = Map<String, dynamic>();
-      map['drugNamename'] = drugName.toString();
+      map['drugName'] = drugName.toString();
+      map['price'] = price.toString();
       map['pharmacy'] = pharmacy.toString();
 
-      final response = await http.post(ROOT, body: map);
+      final response = await http.post(addDrugRoot, body: map);
       print(response);
       if (200 == response.statusCode) {
         print("Successfully added");
@@ -29,8 +31,28 @@ class AdminServices {
     }
   }
 
-  static List<Account> parseResponse(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Account>((json) => Account.fromJson(json)).toList();
+  static Future<String> addNewPharmacy(pharmacyName, address, lat, long) async {
+    try {
+      var map = Map<String, dynamic>();
+      map['pharmacyName'] = pharmacyName.toString();
+      map['address'] = address.toString();
+      map['lat'] = lat.toString();
+      map['long'] = long.toString();
+
+      final response = await http.post(addPharmacyRoot, body: map);
+      print(response);
+      if (200 == response.statusCode) {
+        print("Successfully added");
+
+        return "success";
+      } else {
+        print("500");
+        return "Addition Failed contact admin";
+      }
+    } catch (e) {
+      print(e);
+      print("API DOWN");
+      return "Addition Failed contact admin";
+    }
   }
 }

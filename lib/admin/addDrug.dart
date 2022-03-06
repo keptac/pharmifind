@@ -10,6 +10,7 @@ class AddDrugsState extends State<AddDrugs> {
   GlobalKey<ScaffoldState> _scaffoldKey;
   var drugName = TextEditingController();
   var _pharmacy = TextEditingController();
+  var _price = TextEditingController();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -27,7 +28,8 @@ class AddDrugsState extends State<AddDrugs> {
   }
 
   _addNewDrug() {
-    AdminServices.addNewDrug(drugName.text, _pharmacy.text).then((response) {
+    AdminServices.addNewDrug(drugName.text, _pharmacy.text, _price.text)
+        .then((response) {
       if (response == "success") {
         _showSnackBar(context, "Drug Added successfully");
       } else {
@@ -48,7 +50,29 @@ class AddDrugsState extends State<AddDrugs> {
           contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           hintText: "Enter Drug Name",
           border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
+    );
+    final priceField = TextField(
+      controller: _price,
+      obscureText: false,
+      keyboardType: TextInputType.number,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Drug Price",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
+    );
+
+    final pharmacyField = TextField(
+      controller: drugName,
+      obscureText: false,
+      style: style,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Select Pharmacy",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(12.0))),
     );
 
     final addButton = Material(
@@ -86,13 +110,16 @@ class AddDrugsState extends State<AddDrugs> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 10.0),
+                SizedBox(height: 20.0),
                 drugNameField,
+                SizedBox(height: 20.0),
+                priceField,
+                SizedBox(height: 20.0),
+                pharmacyField,
                 SizedBox(height: 25.0),
-                addButton
+                addButton,
+                // SizedBox(height: 35.0),
               ],
             ),
           ),
