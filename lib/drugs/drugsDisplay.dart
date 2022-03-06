@@ -22,6 +22,7 @@ class DrugDisplayState extends State<DrugDisplay> {
   List<Pharmacy> _searchResult = [];
   List<Pharmacy> _searchLocResult;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+    final LatLng _center = const LatLng(-17.829732153190125, 31.044149276453563);
   @override
   void initState() {
     super.initState();
@@ -110,7 +111,7 @@ class DrugDisplayState extends State<DrugDisplay> {
                 width: 300,
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(-17.824858, 31.053028),
+                    target: _center,
                     zoom: 15.0,
                   ),
                   markers: Set<Marker>.of(markers.values),

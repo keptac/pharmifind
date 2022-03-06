@@ -15,7 +15,7 @@
         android:label="pharmifind"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBBs5ZhggMErqlXl_gwrU4XY0ZdU6Xk0WI"/>
+            android:value="AIzaSyDTQQNxmI_rMaK_d87Spc7PoFrzlO8ouq4"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -18,6 +18,7 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
   List<Pharmacy> _pharmacies;
   GlobalKey<ScaffoldState> _scaffoldKey;
   String _titleProgress;
+  final LatLng _center = const LatLng(-17.829732153190125, 31.044149276453563);
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
@@ -69,10 +70,10 @@ class PharmacyDisplayState extends State<PharmacyDisplay> {
             width: 300,
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(-17.824858, 31.053028),
-                zoom: 15.0,
+                target: _center,
+                zoom: 10.0,
               ),
-              // markers: Set<Marker>.of(markers.values),
+              markers: Set<Marker>.of(markers.values),
             ),
           ),
           actions: <Widget>[
