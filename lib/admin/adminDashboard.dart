@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:pharmifind/admin/addDrug.dart';
+import 'package:pharmifind/designs/label_below_icon.dart';
 import 'package:pharmifind/drugs/searchDrug.dart';
 import 'package:pharmifind/pharmacies/pharmacyDisplay.dart';
 
@@ -86,21 +88,27 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
-                      defaultTargetPlatform == TargetPlatform.android
-                          ? Icons.arrow_back
-                          : Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => Navigator.canPop(context)
-                        ? Navigator.pop(context)
-                        : null,
-                  ),
+                      icon: Icon(
+                        defaultTargetPlatform == TargetPlatform.android
+                            ? Icons.info
+                            : Icons.info_outline_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => null),
                   ProfileTile(
                     title: "Hi, " + username,
-                    subtitle: "Admin Profile",
+                    subtitle: "SYSTEM ADMIN",
                     textColor: Colors.white,
                   ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.lock,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  )
                 ],
               ),
             ],
@@ -176,32 +184,102 @@ class _AdminDashboardState extends State<AdminDashboard> {
         ),
       );
 
-  Widget mapCard() => Padding(
+  Widget adminActions() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Card(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text('Pharmacy locator',
-                    style:
-                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(
-                height: 350.0,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: userLocation != null
-                        ? LatLng(userLocation.latitude, userLocation.longitude)
-                        : _center,
-                    zoom: 15.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Card(
+                  elevation: 5.0,
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddDrugs(),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            CircleAvatar(
+                              backgroundColor: Colors.amber,
+                              radius: 40.0,
+                              child: Icon(
+                                FontAwesomeIcons.pills,
+                                size: 40.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Add Drugs",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  markers: _markers.values.toSet(),
                 ),
-              ),
-            ],
-          ),
+                Card(
+                  elevation: 5.0,
+                  child: SizedBox(
+                    height: 150,
+                    width: 150,
+                    child: Center(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => AddDrugs()),
+                          );
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            CircleAvatar(
+                              backgroundColor: Colors.red[900],
+                              radius: 40.0,
+                              child: Icon(
+                                FontAwesomeIcons.hospital,
+                                size: 40.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Add Pharmacy",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       );
 
@@ -220,7 +298,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             SizedBox(
               height: deviceSize.height * 0.01,
             ),
-            mapCard()
+            adminActions()
           ],
         ),
       );

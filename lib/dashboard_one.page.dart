@@ -86,16 +86,13 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(
-                      defaultTargetPlatform == TargetPlatform.android
-                          ? Icons.arrow_back
-                          : Icons.arrow_back_ios,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => Navigator.canPop(context)
-                        ? Navigator.pop(context)
-                        : null,
-                  ),
+                      icon: Icon(
+                        defaultTargetPlatform == TargetPlatform.android
+                            ? Icons.info
+                            : Icons.info_outline_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => null),
                   ProfileTile(
                     title: "Hi, " + username,
                     subtitle: "Welcome to the Pharmi Find",
@@ -103,11 +100,11 @@ class _DashboardOnePageState extends State<DashboardOnePage> {
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.more_vert,
+                      Icons.lock,
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      print("hi");
+                      Navigator.pop(context);
                     },
                   )
                 ],

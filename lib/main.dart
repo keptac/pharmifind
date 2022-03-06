@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (_users.isNotEmpty) {
         storage.setItem('username', _username.text);
-        if (_username.text == "admin") {
+        if (_username.text.toLowerCase() == "admin") {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => AdminDashboard()),
