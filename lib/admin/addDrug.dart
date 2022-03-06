@@ -61,9 +61,9 @@ class AddDrugsState extends State<AddDrugs> {
     Size deviceSize = MediaQuery.of(context).size;
 
     final pharmaciesDropDown = Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 15),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Colors.grey,
           width: 1,
@@ -83,14 +83,14 @@ class AddDrugsState extends State<AddDrugs> {
             value: pharmacy,
             child: Text(
               pharmacy.name,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontSize: 15),
             ),
           );
         }).toList(),
         hint: Text(
           "Select Pharmacy",
           style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+              color: Colors.black, fontSize: 15, fontWeight: FontWeight.w500),
         ),
         onChanged: (var value) {
           setState(() {
