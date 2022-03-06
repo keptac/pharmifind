@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pharmifind/loginModel.dart';
 import 'package:pharmifind/loginService.dart';
+import 'package:pharmifind/register.dart';
 import 'dashboard_one.page.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -57,40 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // Future<List<Account>> _verifyPassword() async {
-  //   try {
-  //     var map = Map<String, dynamic>();
-  //     map['username'] = _username.text;
-  //     map['password'] = _password.text;
-
-  //     final response = await http.post(ROOT, body: map);
-  //     if (200 == response.statusCode) {
-  //       List<Account> list = parseResponse(response.body);
-  //       if (list.isNotEmpty) {
-  //        await Navigator.push(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => DashboardOnePage()),
-  //         );
-  //         return list;
-  //       } else {
-  //         print("Invalid username/username");
-  //           return list;
-  //       }
-  //     } else {
-  //        print("500r");
-  //       return List<Account>();
-  //     }
-  //   } catch (e) {
-  //      print("API DOWN");
-  //     return List<Account>();
-  //   }
-  // }
-
-  // static List<Account> parseResponse(String responseBody) {
-  //   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-  //   return parsed.map<Account>((json) => Account.fromJson(json)).toList();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final emailField = TextField(
@@ -133,14 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     final registerButton = Material(
-      elevation: 5.0,
+      elevation: 2.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Colors.grey,
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          _loginDet();
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => RegisterPage()));
         },
         child: Text("Register new account",
             textAlign: TextAlign.center,
